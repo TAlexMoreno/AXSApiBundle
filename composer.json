@@ -1,0 +1,21 @@
+{
+    "name": "axs/api-bundle",
+    "description": "Añade funcionalidades de api al modelo de datos ORM de doctrine",
+    "type": "symfony-bundle",
+    "require": {
+        "php": ">=8.1",
+        "symfony/framework-bundle": "^6.1",
+        "symfony/orm-pack": "^2.2",
+        "symfony/security-bundle": "^6.1" 
+    },
+    "autoload": {
+        "psr-4": {
+            "AXS\\ApiBundle\\": "src"
+        }
+    },
+    "licence": "MIT",
+    "authors": [{
+        "name": "Alejandro Moreno Tapia",
+        "email": "alex.mt.10@gmail.com"
+    }]
+}
