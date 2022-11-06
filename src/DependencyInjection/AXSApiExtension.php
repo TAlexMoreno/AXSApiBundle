@@ -15,7 +15,9 @@ class AXSApiExtension extends Extension {
         $loader->load("services.yaml");
 
         $definition = $container->getDefinition("AXS\ApiBundle\Controller\Api");
+        $definition->setArgument('$api_secret', $config["security"]["api_secret"]);
         $definition->setArgument('$user_entity', $config["security"]["user_entity"]);
         $definition->setArgument('$user_uid', $config["security"]["user_uid"]);
+        $definition->setArgument('$exp_defer', $config["security"]["exp_defer"]);
     }
 }

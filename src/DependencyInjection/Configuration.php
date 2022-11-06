@@ -10,8 +10,10 @@ class Configuration implements ConfigurationInterface {
         $tb->getRootNode()->children()
             ->arrayNode("security")
                 ->children()
+                    ->scalarNode("api_secret")->end()
                     ->scalarNode("user_entity")->end()
                     ->scalarNode("user_uid")->end()
+                    ->integerNode("exp_defer")->end()
                 ->end()
             ->end()
         ->end();
