@@ -32,6 +32,10 @@ class Api extends AbstractController {
         private UserPasswordHasherInterface $passHasher
     ){}
 
+    public function getSecret(){
+        return $this->api_secret;
+    }
+
     #[Route("/API", name:"axs_api_index_docs")]
     public function index(Request $req){
         return $this->json([
