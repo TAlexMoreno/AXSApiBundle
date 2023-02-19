@@ -108,6 +108,8 @@ class Api extends AbstractController {
         if ($validation["veredict"]){
             $result = $this->save($data);
             return $result;
+        }else {
+            return $this->json(["status" => "error", "validation" => $validation]);
         }
     }
     #[Route("/API/{entity}/{id}", name:"axs_entity_put", methods:["PUT"])]
