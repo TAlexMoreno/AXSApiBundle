@@ -163,7 +163,7 @@ class Api extends AbstractController {
         }
     }
     private function validate(array $data, string $clase = null, bool $isUpdating=false) : array {
-        $c = $clase ?? $this->class;
+        $c = $clase ?? $this->className;
         $metadata = $this->em->getClassMetadata($c);
         $mandatoryFields = [];
         $allFields = [];
