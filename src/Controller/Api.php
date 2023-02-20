@@ -225,7 +225,7 @@ class Api extends AbstractController {
         return $return;
     }
     public function save(array $data) : JsonResponse {
-        $entity = new $this->class();
+        $entity = new $this->className();
         $response = $this->fillAndPersist($data, $entity);
         if ($response->getStatusCode() == Response::HTTP_OK){
             $data = json_decode($response->getContent())->data;
