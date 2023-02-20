@@ -428,7 +428,7 @@ class Api extends AbstractController {
         switch($type){
             case "datetime_immutable":
                 if ($data == "now"){
-                    $data = new DateTimeImmutable()
+                    $data = new DateTimeImmutable();
                 }else {
                     $data = new DateTimeImmutable($data);
                 }
