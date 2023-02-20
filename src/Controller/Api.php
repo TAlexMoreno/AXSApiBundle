@@ -432,12 +432,14 @@ class Api extends AbstractController {
                 }else {
                     $data = new DateTimeImmutable($data);
                 }
+            break;
             case "datetime": 
                 if ($data == "now"){
                     $data = new DateTime();
                 }else {
                     $data = new DateTime($data); 
                 }
+            break;
             case "boolean":
                 if ($data == 1 || $data === "true") $data = true;
                 if ($data == 0 || $data === "false") $data = false;
