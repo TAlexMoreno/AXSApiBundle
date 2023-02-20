@@ -6,6 +6,7 @@ use AXS\ApiBundle\Utils\JWT;
 use AXS\ApiBundle\Utils\Misc;
 use DateInterval;
 use DateTime;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -459,6 +460,12 @@ class Api extends AbstractController {
                 "double"
             ]);
             case 'datetime_imutable':
+                try {
+                    $test = new DateTimeImmutable($data);
+                    return true;
+                } catch (\Throwable $th){
+                    return false;
+                }
             case 'datetime': 
                 try {
                     $test = new DateTime($data);
