@@ -426,6 +426,12 @@ class Api extends AbstractController {
     }
     private function preprocess(&$data, $type){
         switch($type){
+            case "datetime_immutable":
+                if ($data == "now"){
+                    $data = new DateTimeImmutable()
+                }else {
+                    $data = new DateTimeImmutable($data);
+                }
             case "datetime": 
                 if ($data == "now"){
                     $data = new DateTime();
