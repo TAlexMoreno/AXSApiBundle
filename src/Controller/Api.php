@@ -458,6 +458,7 @@ class Api extends AbstractController {
                 "integer",
                 "double"
             ]);
+            case 'datetime_imutable':
             case 'datetime': 
                 try {
                     $test = new DateTime($data);
