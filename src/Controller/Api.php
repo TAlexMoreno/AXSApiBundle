@@ -147,7 +147,7 @@ class Api extends AbstractController {
         if ($response->getStatusCode() == Response::HTTP_OK){
             $data = json_decode($response->getContent())->data;
             $data->action = "create";
-            $clase = Misc::subscripter($this->class);
+            $clase = Misc::subscripter($this->className);
             $id = $data->id ?? $data["id"];
             // $this->spread([
             //     "action" => "message",
@@ -230,7 +230,7 @@ class Api extends AbstractController {
         if ($response->getStatusCode() == Response::HTTP_OK){
             $data = json_decode($response->getContent())->data;
             $data->action = "create";
-            $clase = Misc::subscripter($this->class);
+            $clase = Misc::subscripter($this->className);
             // $this->spread([
             //     "action" => "message",
             //     "topics" => ["/API/save/{$clase}", "/API/save/{$clase}/{$data->id}"],
@@ -249,7 +249,7 @@ class Api extends AbstractController {
                 $value = $data[$field];
                 $this->preprocess($value, $metadata["type"]);
                 $method = "set" . ucfirst($field);
-                if ($method == "setPassword") $value = $this->hasher->hashPassword($entity, $value);
+                if ($method == "setPassword") $value = $this->passHasher->hashPassword($entity, $value);
                 try {
                     $entity->$method($value);
                 } catch (\Throwable $th) {
