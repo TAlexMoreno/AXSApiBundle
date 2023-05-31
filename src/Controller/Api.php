@@ -13,16 +13,17 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use Error;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Security;
 
 class Api extends AbstractController {
     
     public String $className;
+    private array $validationErrors;
     public function __construct(
         private string $api_secret,
         private string $user_entity, 
@@ -303,6 +304,7 @@ class Api extends AbstractController {
 
     #stopPropagation
     #searchQuery
+    #justSearchIn
     #show
     #getTotal
     #offset
@@ -332,10 +334,14 @@ class Api extends AbstractController {
         }
         
         $paramsToSearch = ($query["searchQuery"] ?? false) ? explode(" ", $query["searchQuery"]) : [];
-        $ors = [];
+        
         foreach($paramsToSearch as $key => $value){
+            $ors = [];
             foreach ($mappings as $field => $fieldMetadata) {
-                if (in_array($fieldMetadata["type"], ["string", "json", "smallint", "integer"])){
+                if (isset($query["justSearchIn"]) && count($query["justSearchIn"]) > 0){
+                    if (!in_array($field, $query["justSearchIn"])) continue;
+                }
+                if (in_array($fieldMetadata["type"], ["string", "json", "smallint", "integer", "text"])){
                     $parametro = str_replace(".", "_", "{$field}_".Misc::getletra($key));
                     $field = strpos($field, ".") ? $field : "e.{$field}";
                     $ors[] = $qb->expr()->like($field, ":{$parametro}");
