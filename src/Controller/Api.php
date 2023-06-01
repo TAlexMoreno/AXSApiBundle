@@ -333,7 +333,11 @@ class Api extends AbstractController {
             }
         }
         
-        $paramsToSearch = ($query["searchQuery"] ?? false) ? explode(" ", $query["searchQuery"]) : [];
+        if (isset($query["nonagregate"])){
+            $paramsToSearch = ($query["searchQuery"] ?? false) ? [$query["searchQuery"]] : [];
+        }else {
+            $paramsToSearch = ($query["searchQuery"] ?? false) ? explode(" ", $query["searchQuery"]) : [];
+        }
         
         foreach($paramsToSearch as $key => $value){
             $ors = [];
