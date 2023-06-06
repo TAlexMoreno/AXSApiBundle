@@ -370,7 +370,8 @@ class Api extends AbstractController {
             //TODO: verificar que sea un orderBy correcto
             foreach ($query["orderBy"] as $key => $dir) {
                 $dir = mb_strtolower($dir) == "desc" ? "DESC" : "ASC";
-                $qb->addOrderBy("e.{$key}", $dir);
+                $key = strpos($key, ".") != false ? $key : "e.{$key}";
+                $qb->addOrderBy($key, $dir);
             }
         }
         if (isset($query["filter"])){
