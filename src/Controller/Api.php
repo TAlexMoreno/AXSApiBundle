@@ -395,6 +395,8 @@ class Api extends AbstractController {
                         }
                     break;
                     case 'relation':
+                        $field = null;
+                        if (strpos($key, ".") !== false) list($key, $field) = explode(".", $key);
                         $te = $metadata->associationMappings[$key]["targetEntity"];
                         $repo = $this->em->getRepository($te);
                         $matches = [];
@@ -407,7 +409,11 @@ class Api extends AbstractController {
                             $propToSearch = str_replace(["[", "]"], "", $matches[0]);
                             $val = $repo->findOneBy([$propToSearch => $val]);
                         }else {
-                            $val = $repo->find($val);
+                            if ($field){
+                                $key = "r_{$key}.{$field}";
+                            }else {
+                                $val = $repo->find($val);
+                            }
                         }
                     break;
                     default:
@@ -415,23 +421,27 @@ class Api extends AbstractController {
                         break;
                 }
                 $this->whereOperator($qb, $key, $val, $rawOperator);
+                // dd($qb->getQuery()->getDQL());
             }
         }
     }
     private function whereOperator(QueryBuilder &$qb, $key, $val, $raw){
+        $key = strpos($key, ".") !== false ? $key : "e.{$key}";
         switch ($raw) {
             case "neq":
-                $qb->andWhere("e.{$key} != :{$key}");
-                $qb->setParameter($key, $val);
+                $paramName = str_replace(".", "_", $key);
+                $qb->andWhere("{$key} != :{$paramName}");
+                $qb->setParameter($paramName, $val);
             break;
             case "lk":
-                $qb->andWhere("e.{$key} like :{$key}");
-                $qb->setParameter($key, "%{$val}%");
+                $paramName = str_replace(".", "_", $key);
+                $qb->andWhere("{$key} like :{$paramName}");
+                $qb->setParameter($paramName, "%{$val}%");
             break;
             default:
-                $qb->andWhere("e.{$key} = :{$key}");
-                $qb->setParameter($key, $val);
-
+                $paramName = str_replace(".", "_", $key);
+                $qb->andWhere("{$key} = :{$paramName}");
+                $qb->setParameter($paramName, $val);
             break;
         }
     }
@@ -505,6 +515,7 @@ class Api extends AbstractController {
         }
     }
     private function localOrRelation($key, $metadata) : ?string{
+        if (strpos($key, ".") !== false) $key = explode(".", $key)[0];
         if (in_array($key, array_keys($metadata->fieldMappings))) return "local";
         if (in_array($key, array_keys($metadata->associationMappings))) return "relation";
         return null;
