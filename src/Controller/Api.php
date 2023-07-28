@@ -379,8 +379,8 @@ class Api extends AbstractController {
                 $type = $this->localOrRelation($key, $metadata);
                 if (strpos($val, "_")){
                     $explode = explode("_", $val);
-                    $val = $explode[1];
-                    $rawOperator = $explode[0];
+                    $rawOperator = array_shift($explode);
+                    $val = implode("_", $explode);
                 }else {
                     $rawOperator = "";
                 }

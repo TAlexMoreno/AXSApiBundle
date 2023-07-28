@@ -5,7 +5,6 @@ services:
     AXS\ApiBundle\Controller\:
         resource: '../../src/Controller'
         tags: ['controller.service_arguments']
-
     AXS\ApiBundle\Controller\Api\:
         resource: '../../src/Controller/Api.php'
         arguments: 
